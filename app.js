@@ -11,7 +11,7 @@ connect();
 const PORT = process.env.PORT || 3000;
 var session = require('express-session');
 
-var authRouter = require('../backend/routes/auth');
+var authRouter = require('./routes/auth');
 var productsRouter = require('./routes/products');
 // var usersRouter = require('../backend/routes/users');
 
