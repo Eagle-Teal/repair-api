@@ -19,7 +19,8 @@ router.get('/profile/:username', verifyToken, async (req, res) => {
 		id: user._id,
         username: user.username,
 		name: user.name,
-        email: user.email
+        email: user.email,
+		point: user.point
 	}
 		res.status(200).json({ ...data, success: true });
 	} catch (error) {
