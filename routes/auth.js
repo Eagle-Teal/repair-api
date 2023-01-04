@@ -102,7 +102,7 @@ router.post('/login', async (req, res) => {
 		const accessToken = jwt.sign(
 			{ userID: user._id },
 			process.env.ACCESS_TOKEN_SECRET,{
-				expiresIn:"365d"
+				expiresIn:"30s"
 			}
 		)
 		const refreshtoken = jwt.sign({userID: user._id},
@@ -112,7 +112,7 @@ router.post('/login', async (req, res) => {
 		user.refreshtoken = refreshtoken;
 		await user.save();
 		res.cookie('refresh_token',refreshtoken,{
-			maxAge: 900000,
+			expires: new Date(Date.now() + (365*24*3600000)),
 			httpOnly:true,
 			secure:false,
 			path:"/",
@@ -144,7 +144,7 @@ router.post('/refresh',async (req,res)=>{
 		const newAccessToken = jwt.sign(
 			{ userID: decode.userID },
 			process.env.ACCESS_TOKEN_SECRET,{
-				expiresIn:"365d"
+				expiresIn:"30s"
 			}
 		)
 		const newRefreshToken = jwt.sign(
@@ -154,7 +154,7 @@ router.post('/refresh',async (req,res)=>{
 			}
 		)
 		res.cookie('refresh_token',newRefreshToken,{
-			maxAge: 900000,
+			expires: new Date(Date.now() + (365*24*3600000)),
 			httpOnly:true,
 			secure:false,
 			path:"/",
