@@ -112,6 +112,7 @@ router.post('/login', async (req, res) => {
 		user.refreshtoken = refreshtoken;
 		await user.save();
 		res.cookie('refresh_token',refreshtoken,{
+			maxAge: 900000,
 			httpOnly:true,
 			secure:false,
 			path:"/",
@@ -153,6 +154,7 @@ router.post('/refresh',async (req,res)=>{
 			}
 		)
 		res.cookie('refresh_token',newRefreshToken,{
+			maxAge: 900000,
 			httpOnly:true,
 			secure:false,
 			path:"/",
