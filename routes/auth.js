@@ -20,7 +20,8 @@ router.get('/profile/:username', verifyToken, async (req, res) => {
         username: user.username,
 		name: user.name,
         email: user.email,
-		point: user.point
+		point: user.point,
+		admin: user.admin
 	}
 		res.status(200).json({ ...data, success: true });
 	} catch (error) {
@@ -102,7 +103,7 @@ router.post('/login', async (req, res) => {
 		const accessToken = jwt.sign(
 			{ userID: user._id },
 			process.env.ACCESS_TOKEN_SECRET,{
-				expiresIn:"1d"
+				expiresIn:"365d"
 			}
 		)
 		const refreshtoken = jwt.sign({userID: user._id},
@@ -112,7 +113,7 @@ router.post('/login', async (req, res) => {
 		user.refreshtoken = refreshtoken;
 		await user.save();
 		res.cookie('refresh_token',refreshtoken,{
-			maxAge:90000,
+			maxAge: 900000,
 			httpOnly:true,
 			secure:false,
 			path:"/",
@@ -144,7 +145,7 @@ router.post('/refresh',async (req,res)=>{
 		const newAccessToken = jwt.sign(
 			{ userID: decode.userID },
 			process.env.ACCESS_TOKEN_SECRET,{
-				expiresIn:"1d"
+				expiresIn:"365d"
 			}
 		)
 		const newRefreshToken = jwt.sign(
@@ -154,7 +155,7 @@ router.post('/refresh',async (req,res)=>{
 			}
 		)
 		res.cookie('refresh_token',newRefreshToken,{
-			maxAge:90000,
+			maxAge: 900000,
 			httpOnly:true,
 			secure:false,
 			path:"/",
